@@ -6,7 +6,7 @@
 
 ## Current Status
 
-**Phase 1 — Domain Layer & Event Sourcing Core** is complete. Awaiting approval for Phase 2.
+**Phase 2 — Application Layer (CQRS + MediatR)** is complete. Awaiting approval for Phase 3.
 
 ---
 
@@ -61,6 +61,7 @@ None at this stage.
 |---|---|---|
 | 0 | Complete | Docs + solution scaffold, 7 projects, 0 build errors |
 | 1 | Complete | Domain layer — 5 enums, 2 value objects, 5 exceptions, 8 events, 3 entities, 39/39 tests |
+| 2 | Complete | Application layer — 9 interfaces, 3 behaviours, 10 commands, 7 queries, 3 auth, DI extension, 8/8 tests |
 
 ---
 

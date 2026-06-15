@@ -361,7 +361,7 @@ Every method that touches I/O (database, HTTP, file system) must be `async` and 
 |---|---|---|
 | 0 | Documentation & Setup | Complete |
 | 1 | Domain Layer & Event Sourcing Core | Complete |
-| 2 | Application Layer (CQRS + MediatR) | Not Started |
+| 2 | Application Layer (CQRS + MediatR) | Complete |
 | 3 | Infrastructure Layer (EF Core + Event Store + JWT) | Not Started |
 | 4 | API Layer, Swagger & Deployment Config | Not Started |
 | 5 | React Frontend & Final Polish | Not Started |
