@@ -6,7 +6,7 @@
 
 ## Current Status
 
-**Phase 3 — Infrastructure Layer** is complete. Awaiting approval for Phase 4.
+**Phase 4 — API Layer** is complete. Awaiting approval for Phase 5.
 
 ---
 
@@ -63,6 +63,7 @@ None at this stage.
 | 1 | Complete | Domain layer — 5 enums, 2 value objects, 5 exceptions, 8 events, 3 entities, 39/39 tests |
 | 2 | Complete | Application layer — 9 interfaces, 3 behaviours, 10 commands, 7 queries, 3 auth, DI extension, 8/8 tests |
 | 3 | Complete | Infrastructure layer — 7 EF entities, 7 EF configs, AppDbContext, EventSerializer, EventStoreRepository (sync projections), 5 repositories, JwtService, BCryptPasswordHasher, RiskAssessmentService, DI extension — 47/47 tests pass |
+| 4 | Complete | API layer — ExceptionHandlingMiddleware, CurrentUserService, JwtAuthentication, SwaggerWithJwt, 5 controllers (16 endpoints), Program.cs, Dockerfile (multi-stage), fly.toml (lhr region) — 47/47 tests pass |
 
 ---
 
