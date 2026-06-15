@@ -1,0 +1,106 @@
+# flyctl launch added from .gitignore
+# .NET
+**/bin
+**/obj
+**/*.user
+**/*.suo
+**/.vs
+**/*.userprefs
+**/*.pidb
+**/*.sln.cache
+**/_ReSharper*
+**/*.DotSettings.user
+**/TestResults
+**/coverage
+**/*.coverage
+**/*.coveragexml
+**/.sonarqube
+
+# EF Core
+**/*.db
+**/*.db-shm
+**/*.db-wal
+
+# NuGet
+**/*.nupkg
+**/*.snupkg
+**/.nuget
+**/packages
+**/project.lock.json
+**/project.fragment.lock.json
+**/artifacts
+
+# Build output
+**/publish
+**/dist
+**/out
+
+# Secrets and environment
+**/.env
+**/.env.local
+**/.env.production
+**/*.pfx
+**/*.key
+**/secrets.json
+**/appsettings.local.json
+
+# Node / pnpm
+**/node_modules
+**/.pnpm-debug.log
+**/pnpm-error.log
+**/npm-debug.log
+**/yarn-error.log
+
+# Vite / frontend build
+**/frontend/dist
+**/frontend/.vite
+
+# OS files
+**/.DS_Store
+**/Thumbs.db
+**/desktop.ini
+
+# JetBrains IDEs
+**/.idea
+**/*.iml
+
+# Visual Studio Code
+**/.vscode/launch.json
+**/.vscode/tasks.json
+
+# Logs
+**/*.log
+**/logs
+
+# Docker
+**/.docker
+
+# Fly.io
+**/.fly
+
+# flyctl launch added from frontend/.gitignore
+# Logs
+frontend/**/logs
+frontend/**/*.log
+frontend/**/npm-debug.log*
+frontend/**/yarn-debug.log*
+frontend/**/yarn-error.log*
+frontend/**/pnpm-debug.log*
+frontend/**/lerna-debug.log*
+
+frontend/**/node_modules
+frontend/**/dist
+frontend/**/dist-ssr
+frontend/**/*.local
+
+# Editor directories and files
+frontend/**/.vscode/*
+!frontend/**/.vscode/extensions.json
+frontend/**/.idea
+frontend/**/.DS_Store
+frontend/**/*.suo
+frontend/**/*.ntvs*
+frontend/**/*.njsproj
+frontend/**/*.sln
+frontend/**/*.sw?
+fly.toml

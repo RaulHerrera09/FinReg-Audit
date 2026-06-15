@@ -6,7 +6,7 @@
 
 ## Current Status
 
-**Phase 5 — React Frontend** is complete. Awaiting approval for Phase 6.
+**Phase 6 — Testing, README & Deployment** is in progress. Integration tests and README written. Deployment pending user execution.
 
 ---
 
@@ -65,22 +65,25 @@ None at this stage.
 | 3 | Complete | Infrastructure layer — 7 EF entities, 7 EF configs, AppDbContext, EventSerializer, EventStoreRepository (sync projections), 5 repositories, JwtService, BCryptPasswordHasher, RiskAssessmentService, DI extension — 47/47 tests pass |
 | 4 | Complete | API layer — ExceptionHandlingMiddleware, CurrentUserService, JwtAuthentication, SwaggerWithJwt, 5 controllers (16 endpoints), Program.cs, Dockerfile (multi-stage), fly.toml (lhr region) — 47/47 tests pass |
 | 5 | Complete | React 18 frontend — Vite + Tailwind CSS 4 + TanStack Query/Table + Zustand + Lucide React + React Router 7. Login page, Dashboard (stat cards + alerts), Accounts (table + open-account modal), Account Detail (transactions/alerts/compliance tabs + initiate/complete/flag modals), Alerts. TypeScript build clean. |
+| 6 | In Progress | Integration tests (TestContainers.PostgreSql + WebApplicationFactory) — 8 tests across Auth + AccountLifecycle. DatabaseSeeder (dev demo users). Root README.md (portfolio-grade). Deployment pending. |
 
 ---
 
-## Demo Credentials (populated in Phase 6)
+## Demo Credentials
 
 | Role | Email | Password |
 |---|---|---|
-| ComplianceOfficer | compliance@demo.finreg.dev | (set in Phase 6) |
-| Auditor | auditor@demo.finreg.dev | (set in Phase 6) |
+| ComplianceOfficer | compliance@demo.finreg.dev | Compliance@123 |
+| Auditor | auditor@demo.finreg.dev | Audit@123 |
+
+Seeded automatically by `DatabaseSeeder` on first startup in Development. For production, run `dotnet ef database update` then deploy — the seeder runs on app startup.
 
 ---
 
-## Live URLs (populated in Phase 6)
+## Live URLs (populate after deployment)
 
 | Service | URL |
 |---|---|
-| Swagger UI | TBD |
-| Frontend | TBD |
-| Health Check | TBD |
+| Swagger UI | https://finreg-audit.fly.dev/swagger |
+| Frontend | https://finreg-audit.vercel.app |
+| Health Check | https://finreg-audit.fly.dev/health |

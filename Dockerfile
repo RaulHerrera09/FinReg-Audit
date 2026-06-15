@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /repo
 
@@ -10,10 +11,12 @@ COPY tests/FinReg.Domain.Tests/FinReg.Domain.Tests.csproj tests/FinReg.Domain.Te
 COPY tests/FinReg.Application.Tests/FinReg.Application.Tests.csproj tests/FinReg.Application.Tests/
 COPY tests/FinReg.Integration.Tests/FinReg.Integration.Tests.csproj tests/FinReg.Integration.Tests/
 
-RUN dotnet restore src/FinReg.API/FinReg.API.csproj
+RUN --mount=type=cache,target=/root/.nuget/packages \
+    dotnet restore src/FinReg.API/FinReg.API.csproj
 
 COPY . .
-RUN dotnet publish src/FinReg.API/FinReg.API.csproj -c Release -o /app/publish --no-restore
+RUN --mount=type=cache,target=/root/.nuget/packages \
+    dotnet publish src/FinReg.API/FinReg.API.csproj -c Release -o /app/publish --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app

@@ -27,9 +27,14 @@ public static class DependencyInjection
             if (int.TryParse(section["RefreshTokenExpiryDays"], out var d)) opts.RefreshTokenExpiryDays = d;
         });
 
+        var connectionString =
+            Environment.GetEnvironmentVariable("DATABASE_URL")
+            ?? configuration.GetConnectionString("DefaultConnection")
+            ?? throw new InvalidOperationException("No database connection string configured.");
+
         services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(
-                configuration.GetConnectionString("DefaultConnection"),
+                connectionString,
                 npgsql => npgsql.MigrationsAssembly(typeof(AppDbContext).Assembly.GetName().Name)));
 
         services.AddScoped<IEventStore, EventStoreRepository>();
@@ -41,6 +46,7 @@ public static class DependencyInjection
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
         services.AddScoped<IRiskAssessmentService, RiskAssessmentService>();
+        services.AddScoped<DatabaseSeeder>();
 
         return services;
     }
