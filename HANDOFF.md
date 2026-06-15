@@ -6,7 +6,7 @@
 
 ## Current Status
 
-**Phase 2 — Application Layer (CQRS + MediatR)** is complete. Awaiting approval for Phase 3.
+**Phase 3 — Infrastructure Layer** is complete. Awaiting approval for Phase 4.
 
 ---
 
@@ -62,6 +62,7 @@ None at this stage.
 | 0 | Complete | Docs + solution scaffold, 7 projects, 0 build errors |
 | 1 | Complete | Domain layer — 5 enums, 2 value objects, 5 exceptions, 8 events, 3 entities, 39/39 tests |
 | 2 | Complete | Application layer — 9 interfaces, 3 behaviours, 10 commands, 7 queries, 3 auth, DI extension, 8/8 tests |
+| 3 | Complete | Infrastructure layer — 7 EF entities, 7 EF configs, AppDbContext, EventSerializer, EventStoreRepository (sync projections), 5 repositories, JwtService, BCryptPasswordHasher, RiskAssessmentService, DI extension — 47/47 tests pass |
 
 ---
 

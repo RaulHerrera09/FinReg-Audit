@@ -5,7 +5,9 @@ using MediatR;
 
 namespace FinReg.Application.Transactions.Commands.CompleteTransaction;
 
-public sealed class CompleteTransactionCommandHandler(IAccountRepository accountRepository)
+public sealed class CompleteTransactionCommandHandler(
+    IAccountRepository accountRepository,
+    IRiskAssessmentService riskAssessmentService)
     : IRequestHandler<CompleteTransactionCommand, ApiResponse<bool>>
 {
     public async Task<ApiResponse<bool>> Handle(CompleteTransactionCommand command, CancellationToken ct)
@@ -14,6 +16,12 @@ public sealed class CompleteTransactionCommandHandler(IAccountRepository account
             ?? throw new AccountNotFoundException(command.AccountId);
 
         account.CompleteTransaction(command.TransactionId);
+
+        var tx = account.Transactions.First(t => t.Id == command.TransactionId);
+        var risk = riskAssessmentService.Assess(tx.Amount.Amount, tx.Amount.Currency);
+        if (risk.ShouldFlag)
+            account.FlagTransaction(command.TransactionId, risk.RiskLevel, risk.Severity, risk.Reason);
+
         await accountRepository.SaveAsync(account, ct);
         return ApiResponse<bool>.Ok(true);
     }
