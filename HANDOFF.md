@@ -6,7 +6,7 @@
 
 ## Current Status
 
-**Phase 4 — API Layer** is complete. Awaiting approval for Phase 5.
+**Phase 5 — React Frontend** is complete. Awaiting approval for Phase 6.
 
 ---
 
@@ -64,6 +64,7 @@ None at this stage.
 | 2 | Complete | Application layer — 9 interfaces, 3 behaviours, 10 commands, 7 queries, 3 auth, DI extension, 8/8 tests |
 | 3 | Complete | Infrastructure layer — 7 EF entities, 7 EF configs, AppDbContext, EventSerializer, EventStoreRepository (sync projections), 5 repositories, JwtService, BCryptPasswordHasher, RiskAssessmentService, DI extension — 47/47 tests pass |
 | 4 | Complete | API layer — ExceptionHandlingMiddleware, CurrentUserService, JwtAuthentication, SwaggerWithJwt, 5 controllers (16 endpoints), Program.cs, Dockerfile (multi-stage), fly.toml (lhr region) — 47/47 tests pass |
+| 5 | Complete | React 18 frontend — Vite + Tailwind CSS 4 + TanStack Query/Table + Zustand + Lucide React + React Router 7. Login page, Dashboard (stat cards + alerts), Accounts (table + open-account modal), Account Detail (transactions/alerts/compliance tabs + initiate/complete/flag modals), Alerts. TypeScript build clean. |
 
 ---
 
