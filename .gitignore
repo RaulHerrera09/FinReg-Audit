@@ -1,0 +1,78 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.userprefs
+*.pidb
+*.sln.cache
+_ReSharper*/
+*.DotSettings.user
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+.sonarqube/
+
+# EF Core
+*.db
+*.db-shm
+*.db-wal
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Build output
+publish/
+dist/
+out/
+
+# Secrets and environment
+.env
+.env.local
+.env.production
+*.pfx
+*.key
+secrets.json
+appsettings.local.json
+
+# Node / pnpm
+node_modules/
+.pnpm-debug.log
+pnpm-error.log
+npm-debug.log
+yarn-error.log
+
+# Vite / frontend build
+frontend/dist/
+frontend/.vite/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# JetBrains IDEs
+.idea/
+*.iml
+
+# Visual Studio Code
+.vscode/launch.json
+.vscode/tasks.json
+
+# Logs
+*.log
+logs/
+
+# Docker
+.docker/
+
+# Fly.io
+.fly/
