@@ -6,7 +6,7 @@
 
 ## Current Status
 
-**Phase 6 — Testing, README & Deployment** is in progress. Integration tests and README written. Deployment pending user execution.
+**Phase 6 — Testing, README & Deployment** is complete. All phases done. Live at https://finreg-audit.fly.dev/swagger (API) and https://fin-reg-audit.vercel.app (frontend).
 
 ---
 
@@ -65,7 +65,7 @@ None at this stage.
 | 3 | Complete | Infrastructure layer — 7 EF entities, 7 EF configs, AppDbContext, EventSerializer, EventStoreRepository (sync projections), 5 repositories, JwtService, BCryptPasswordHasher, RiskAssessmentService, DI extension — 47/47 tests pass |
 | 4 | Complete | API layer — ExceptionHandlingMiddleware, CurrentUserService, JwtAuthentication, SwaggerWithJwt, 5 controllers (16 endpoints), Program.cs, Dockerfile (multi-stage), fly.toml (lhr region) — 47/47 tests pass |
 | 5 | Complete | React 18 frontend — Vite + Tailwind CSS 4 + TanStack Query/Table + Zustand + Lucide React + React Router 7. Login page, Dashboard (stat cards + alerts), Accounts (table + open-account modal), Account Detail (transactions/alerts/compliance tabs + initiate/complete/flag modals), Alerts. TypeScript build clean. |
-| 6 | In Progress | Integration tests (TestContainers.PostgreSql + WebApplicationFactory) — 8 tests across Auth + AccountLifecycle. DatabaseSeeder (dev demo users). Root README.md (portfolio-grade). Deployment pending. |
+| 6 | Complete | Integration tests (TestContainers.PostgreSql + WebApplicationFactory) — 8 tests across Auth + AccountLifecycle. DatabaseSeeder (dev demo users). Root README.md (portfolio-grade). Live: https://finreg-audit.fly.dev/swagger + https://fin-reg-audit.vercel.app. Fixed POST /api/accounts/{id}/transactions 400 by adding JsonStringEnumConverter to JSON options. |
 
 ---
 
@@ -85,5 +85,5 @@ Seeded automatically by `DatabaseSeeder` on first startup in Development. For pr
 | Service | URL |
 |---|---|
 | Swagger UI | https://finreg-audit.fly.dev/swagger |
-| Frontend | https://finreg-audit.vercel.app |
+| Frontend | https://fin-reg-audit.vercel.app |
 | Health Check | https://finreg-audit.fly.dev/health |

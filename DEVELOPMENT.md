@@ -365,4 +365,4 @@ Every method that touches I/O (database, HTTP, file system) must be `async` and 
 | 3 | Infrastructure Layer (EF Core + Event Store + JWT) | Complete |
 | 4 | API Layer, Swagger & Deployment Config | Complete |
 | 5 | React Frontend & Final Polish | Complete |
-| 6 | Testing, README & Deployment | In Progress |
+| 6 | Testing, README & Deployment | Complete |

@@ -1,4 +1,4 @@
-# FinReg Audit Platform
+# FinReg Audit 
 
 A production-grade financial compliance system implementing Event Sourcing, CQRS, and Clean Architecture — the same patterns used at Monzo, Revolut, and Standard Life to satisfy FCA audit trail requirements.
 
@@ -8,7 +8,7 @@ A production-grade financial compliance system implementing Event Sourcing, CQRS
 | Service | URL |
 |---|---|
 | Swagger UI | https://finreg-audit.fly.dev/swagger |
-| Frontend | https://finreg-audit.vercel.app |
+| Frontend | https://fin-reg-audit.vercel.app |
 | Health check | https://finreg-audit.fly.dev/health |
 
 **Demo credentials:** `compliance@demo.finreg.dev` / `Compliance@123`
