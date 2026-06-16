@@ -17,7 +17,7 @@ A production-grade financial compliance system implementing Event Sourcing, CQRS
 
 ## Screenshots
 
-![Dashboard](docs/Dashboarad_Finger_Audit.png)
+![Dashboard](docs/Dashboard_FinReg_Audit.png)
 ![Accounts](docs/Accounts_FinReg.png)
 ![Alerts](docs/Alerts_FinReg.png)
 
