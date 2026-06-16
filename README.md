@@ -15,6 +15,15 @@ A production-grade financial compliance system implementing Event Sourcing, CQRS
 
 ---
 
+## Screenshots
+
+![Dashboard](docs/Dashboarad_Finger_Audit.png)
+![Accounts](docs/Accounts_FinReg.png)
+![Alerts](docs/Alerts_FinReg.png)
+
+
+---
+
 ## What this demonstrates
 
 Every account state change — an account opening, a transaction, a fraud flag — is stored as an immutable event. Nothing is ever updated or deleted. Any account's complete history can be reproduced by replaying its events, exactly as required under FCA audit rules.
