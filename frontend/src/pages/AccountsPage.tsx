@@ -1,14 +1,11 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Plus } from 'lucide-react'
 import { getAccounts } from '../api/accounts'
 import AccountsTable from '../components/accounts/AccountsTable'
-import OpenAccountModal from '../components/accounts/OpenAccountModal'
 import Pagination from '../components/ui/Pagination'
 
 export default function AccountsPage() {
   const [page, setPage] = useState(1)
-  const [showModal, setShowModal] = useState(false)
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['accounts', page],
@@ -24,13 +21,7 @@ export default function AccountsPage() {
           <h1 className="text-2xl font-bold text-slate-900">Accounts</h1>
           <p className="text-slate-500 text-sm mt-1">Manage and monitor regulated accounts</p>
         </div>
-        <button
-          onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors"
-        >
-          <Plus size={16} />
-          Open Account
-        </button>
+        <p className="user-context"><strong>Read access</strong>Account opening requires an operational role, which is not implemented.</p>
       </div>
 
       <div className="bg-white rounded-xl border border-slate-200">
@@ -51,7 +42,6 @@ export default function AccountsPage() {
         )}
       </div>
 
-      {showModal && <OpenAccountModal onClose={() => setShowModal(false)} />}
     </div>
   )
 }

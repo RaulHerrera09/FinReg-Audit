@@ -1,204 +1,111 @@
-# FinReg Audit 
+# FinReg Audit
 
-A production-grade financial compliance system implementing Event Sourcing, CQRS, and Clean Architecture — the same patterns used at Monzo, Revolut, and Standard Life to satisfy FCA audit trail requirements.
+FinReg Audit is a technical platform inspired by financial audit and compliance workflows. It demonstrates event-sourced audit history, account-level evidence, compliance review, and role-aware API authorization.
 
----
+## Live Demo
 
-**Live demo:**
-| Service | URL |
-|---|---|
-| Swagger UI | https://finreg-audit.fly.dev/swagger |
-| Frontend | https://fin-reg-audit.vercel.app |
-| Health check | https://finreg-audit.fly.dev/health |
+[Open the live demo](https://fin-reg-audit.vercel.app)
 
-**Demo credentials:** `compliance@demo.finreg.dev` / `Compliance@123`
+The Vercel production URL above returned HTTP 200 when this README was updated. Access depends on the deployed API and its environment configuration. Demo credentials are intentionally not documented here because their current end-to-end availability was not verified during this change.
 
----
+Recruiters can explore the dashboard, accounts, account detail, transactions, risk alerts, compliance report, audit trail, Evidence Rail, event versioning, pagination, and role-aware responses.
 
-## Screenshots
+## Regulatory Control Room
 
-![Dashboard](docs/Dashboard_FinReg_Audit.png)
-![Accounts](docs/Accounts_FinReg.png)
-![Alerts](docs/Alerts_FinReg.png)
+The interface is designed as a Regulatory Control Room: a restrained operational workspace that prioritizes evidence over decorative metrics. It uses a warm bone surface, graphite navigation, petroleum-blue actions, and copper trace markers. The Evidence Rail makes event sequence, version, and timing easy to scan without implying a certification or legal guarantee.
 
+## Permissions
 
----
+| Capability | Auditor | ComplianceOfficer |
+|---|---:|---:|
+| Read accounts, transactions, alerts, compliance and audit trail | Yes | Yes |
+| Register risk exception / flag transaction | No | Yes |
+| Open account | No | No |
+| Complete transaction | No | No |
+| Suspend or close account | No | No |
+| Resolve or approve alerts | Not implemented | Not implemented |
 
-## What this demonstrates
+The API enforces these capabilities with authorization policies. A request without a valid session receives HTTP 401; an authenticated request without the required capability receives HTTP 403. The frontend reflects those capabilities but is not the authorization boundary.
 
-Every account state change — an account opening, a transaction, a fraud flag — is stored as an immutable event. Nothing is ever updated or deleted. Any account's complete history can be reproduced by replaying its events, exactly as required under FCA audit rules.
+## Audit History
 
-The system automatically detects four simplified but realistic AML patterns:
+The account-level audit trail presents evidence supplied by the current API contract:
 
-| Trigger | Rule |
-|---|---|
-| Large transaction | Single transaction ≥ £10,000 |
-| Structuring | Cumulative transactions > £25,000 within 24 hours |
-| Fraud attempt | 5+ failed transactions within 1 hour |
-| Dormant account | 12+ months inactive, then sudden large activity |
+- Event ID
+- Aggregate/entity
+- Event type
+- `OccurredOn`
+- Version
+- Deterministic ordering by `OccurredOn`, version, and event ID
+- UTC timestamp with local display time as secondary context
+- Evidence Rail timeline and paginated results
 
-Recruiter flow in under 2 minutes: log in with demo credentials → open an account → initiate a £15,000 credit → watch the `TransactionFlaggedEvent` and `SuspiciousActivityDetectedEvent` appear in the audit trail automatically.
+Actor, origin, ingestion time, and payload metadata appear as **Not available** when the API does not provide them. The event store is append-only at application level; it is not described as a cryptographic or database-level guarantee.
 
----
+## Security Notes
+
+- JWT access tokens are kept in in-memory session state and are not persisted in `localStorage`.
+- The frontend handles HTTP 401 and HTTP 403 responses explicitly.
+- Backend authorization policies enforce supported capabilities.
+- XSS and session-token risks still require defence in depth, including a reviewed Content Security Policy and secure production session design.
+- No production tokens or secrets are stored in this repository.
+
+## Design Preview
+
+![FinReg dashboard](docs/Dashboard_FinReg_Audit.png)
+![FinReg accounts](docs/Accounts_FinReg.png)
+![FinReg alerts](docs/Alerts_FinReg.png)
+
+These are persistent repository previews. A current audit-trail preview is not included because no persistent audit-trail image exists in the repository.
 
 ## Architecture
 
-```
-┌───────────────────────────────────────────────────────────────┐
-│                        React 18 Frontend                       │
-│          (Vite · TanStack Query · Zustand · Tailwind 4)       │
-└─────────────────────────────┬─────────────────────────────────┘
-                              │ REST / JSON
-┌─────────────────────────────▼─────────────────────────────────┐
-│                      FinReg.API (ASP.NET Core 8)               │
-│          Controllers · JWT Auth · Swagger · MediatR Dispatch   │
-└──────┬──────────────────────────────────────────┬─────────────┘
-       │ MediatR Commands/Queries                  │
-┌──────▼──────────────────────┐    ┌──────────────▼─────────────┐
-│  FinReg.Application          │    │   FinReg.Infrastructure     │
-│  Use cases · Validators      │    │   EF Core · Npgsql          │
-│  Pipeline behaviours         │    │   EventStoreRepository      │
-│  (Logging · Validation       │◄───│   Repositories · JwtService │
-│   · Performance)             │    │   RiskAssessmentService     │
-└──────┬──────────────────────┘    └──────────────┬─────────────┘
-       │ Entities · Events                         │
-┌──────▼──────────────────────┐                   │
-│  FinReg.Domain               │    ┌──────────────▼─────────────┐
-│  Account aggregate root      │    │  PostgreSQL 16              │
-│  Domain events · Value       │    │  audit_events (append-only) │
-│  objects · FCA rules         │    │  account_snapshots (perf)   │
-└─────────────────────────────┘    │  accounts · transactions     │
-                                   │  alerts · users              │
-                                   └─────────────────────────────┘
-```
+- **Frontend:** React 19, TypeScript, Vite, React Router, TanStack Query, TanStack Table, Zustand, Tailwind CSS, and Lucide React.
+- **API:** ASP.NET Core 8, MediatR, FluentValidation, JWT authentication, and Swagger.
+- **Application:** CQRS handlers and MediatR pipeline behaviours.
+- **Domain:** Event Sourcing, aggregates, domain events, value objects, and business rules.
+- **Infrastructure:** Entity Framework Core, Npgsql, PostgreSQL, BCrypt, and repository implementations.
+- **Structure:** Clean Architecture keeps Domain and Application independent of infrastructure concerns.
 
-### Key architectural decisions
-
-**Event Sourcing over CRUD** — The `audit_events` table is strictly append-only. The aggregate root's current state is always derived by replaying events. Snapshots kick in after 100 events to avoid full replay on every read.
-
-**CQRS** — Commands mutate state through the domain model and append events. Queries read from denormalised read models (populated synchronously during event processing) and never touch the event store.
-
-**Clean Architecture** — Zero EF Core references in Domain or Application. Infrastructure implements Application interfaces. Controllers contain no business logic.
-
----
-
-## Tech stack
-
-| Layer | Technology |
-|---|---|
-| Frontend | React 18, TypeScript, Vite, Tailwind CSS 4, TanStack Query, TanStack Table, Zustand, React Router 7, Lucide React |
-| API | ASP.NET Core 8, MediatR, FluentValidation, Swagger/Swashbuckle |
-| Application | CQRS handlers, MediatR pipeline behaviours (logging, validation, performance) |
-| Infrastructure | Entity Framework Core 8, Npgsql, BCrypt.Net, System.IdentityModel.Tokens.Jwt |
-| Database | PostgreSQL 16 |
-| Testing | xUnit, NSubstitute, FluentAssertions, TestContainers (PostgreSQL) |
-| Deployment | Fly.io (API), Supabase (DB), Vercel (frontend) |
-
----
-
-## Local development
+## Local Development
 
 ### Prerequisites
 
 - .NET 8 SDK
 - Node.js 20+ and pnpm
-- Docker (for PostgreSQL)
+- Docker, for PostgreSQL and integration tests
 
 ### Backend
 
 ```bash
-# Start PostgreSQL
 docker compose up -d
-
-# Run API (http://localhost:5000 · Swagger at /swagger)
 dotnet run --project src/FinReg.API
 ```
-
-Demo users are seeded automatically on first startup in Development.
 
 ### Frontend
 
 ```bash
 cd frontend
 pnpm install
-pnpm dev    # http://localhost:5173
+pnpm dev
 ```
 
----
+## Validation
 
-## Tests
+The most recent local validation completed the following:
 
-```bash
-# Unit tests (Domain + Application) — no external dependencies
-dotnet test tests/FinReg.Domain.Tests
-dotnet test tests/FinReg.Application.Tests
+- .NET build passed.
+- Frontend typecheck passed.
+- Vite production build passed.
+- 47 unit tests passed.
+- Eight integration tests were blocked because Docker/Testcontainers was unavailable.
+- Lint passed with two existing TanStack Table / React Compiler compatibility warnings.
 
-# Integration tests — requires Docker (TestContainers spins up PostgreSQL automatically)
-dotnet test tests/FinReg.Integration.Tests
+No claim is made for physical-device, screen-reader, or fully executed visual QA. Responsive and visual QA remain pending against a running local API.
 
-# All tests with coverage
-dotnet test --collect:"XPlat Code Coverage"
-```
+## Known Limitations
 
-Integration tests spin up a real PostgreSQL container per test class via TestContainers, apply the EF Core schema, seed a test user, and exercise the full HTTP stack from controller to database.
-
----
-
-## Deployment
-
-### 1 — Supabase (PostgreSQL)
-
-Create a project at [supabase.com](https://supabase.com). Use the **transaction pooler URL** at port **6543** (required for EF Core with serverless connections):
-
-```
-Host=aws-0-eu-west-2.pooler.supabase.com;Port=6543;Database=postgres;
-Username=postgres.yourref;Password=yourpassword;
-Pooling=true;Minimum Pool Size=1;Maximum Pool Size=20
-```
-
-### 2 — Fly.io (API)
-
-```bash
-fly launch                              # first time only
-fly secrets set DATABASE_URL="<supabase-pooler-url>"
-fly secrets set JWT_SECRET="<min-32-char-secret>"
-fly secrets set JWT_ISSUER="finreg-audit-platform"
-fly secrets set JWT_AUDIENCE="finreg-audit-api"
-fly secrets set ASPNETCORE_ENVIRONMENT="Production"
-fly deploy
-```
-
-The API runs at `https://finreg-audit.fly.dev`. Swagger UI is disabled in Production — add `ASPNETCORE_ENVIRONMENT=Staging` to keep it enabled without demo user seeding.
-
-### 3 — EF Core migrations
-
-```bash
-DATABASE_URL="<supabase-pooler-url>" \
-  dotnet ef database update \
-  --project src/FinReg.Infrastructure \
-  --startup-project src/FinReg.API
-```
-
-### 4 — Vercel (frontend)
-
-- Set Root Directory to `frontend` in Vercel project settings
-- Set environment variable `VITE_API_BASE_URL=https://finreg-audit.fly.dev`
-- Vercel auto-detects Vite
-
----
-
-## Project structure
-
-```
-finreg-audit-platform/
-├── src/
-│   ├── FinReg.Domain/          # Entities, events, value objects, enums (zero NuGet deps)
-│   ├── FinReg.Application/     # CQRS handlers, validators, MediatR pipeline
-│   ├── FinReg.Infrastructure/  # EF Core, Npgsql, JWT, BCrypt, risk service
-│   └── FinReg.API/             # Controllers, middleware, Swagger, Program.cs
-├── tests/
-│   ├── FinReg.Domain.Tests/
-│   ├── FinReg.Application.Tests/
-│   └── FinReg.Integration.Tests/   # TestContainers + WebApplicationFactory
-└── frontend/                   # React 18 SPA
-```
+- Cursor pagination is not yet implemented; offset pagination can shift while new events arrive.
+- The event store is not a cryptographic or infrastructure-level immutability guarantee.
+- The supported roles intentionally do not include an operational account-management role.
+- This is a technical demonstration, not a certified or legally compliant financial system.

@@ -33,7 +33,8 @@ public sealed class TransactionRepository(AppDbContext db) : ITransactionReposit
     {
         var query = db.Transactions.AsNoTracking()
             .Where(t => t.AccountId == accountId)
-            .OrderByDescending(t => t.InitiatedAt);
+            .OrderByDescending(t => t.InitiatedAt)
+            .ThenByDescending(t => t.Id);
 
         var total = await query.CountAsync(ct);
         var items = await query
@@ -70,6 +71,7 @@ public sealed class TransactionRepository(AppDbContext db) : ITransactionReposit
         return await db.Transactions.AsNoTracking()
             .Where(t => t.AccountId == accountId)
             .OrderByDescending(t => t.InitiatedAt)
+            .ThenByDescending(t => t.Id)
             .Select(t => new TransactionDto
             {
                 Id = t.Id,

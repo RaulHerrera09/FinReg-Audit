@@ -3,10 +3,10 @@ import Sidebar from './Sidebar'
 
 export default function AppLayout() {
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden">
+    <div className="app-shell">
       <Sidebar />
-      <main className="flex-1 overflow-y-auto">
-        <div className="p-8">
+      <main className="app-main" id="main-content">
+        <div className="app-content">
           <Outlet />
         </div>
       </main>

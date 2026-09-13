@@ -9,7 +9,9 @@ public sealed class AlertRepository(AppDbContext db) : IAlertRepository
 {
     public async Task<PaginatedList<AlertDto>> GetPagedAsync(PaginationParams pagination, CancellationToken ct = default)
     {
-        var query = db.Alerts.AsNoTracking().OrderByDescending(a => a.OccurredOn);
+        var query = db.Alerts.AsNoTracking()
+            .OrderByDescending(a => a.OccurredOn)
+            .ThenByDescending(a => a.Id);
         var total = await query.CountAsync(ct);
         var items = await query
             .Skip((pagination.Page - 1) * pagination.PageSize)
@@ -39,7 +41,8 @@ public sealed class AlertRepository(AppDbContext db) : IAlertRepository
     {
         var query = db.Alerts.AsNoTracking()
             .Where(a => a.AccountId == accountId)
-            .OrderByDescending(a => a.OccurredOn);
+            .OrderByDescending(a => a.OccurredOn)
+            .ThenByDescending(a => a.Id);
 
         var total = await query.CountAsync(ct);
         var items = await query

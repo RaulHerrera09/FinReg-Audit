@@ -6,6 +6,10 @@ namespace FinReg.API.Extensions;
 
 public static class AuthExtensions
 {
+    public const string ReadAccess = "FinReg.ReadAccess";
+    public const string ComplianceReview = "FinReg.ComplianceReview";
+    public const string UnavailableOperation = "FinReg.UnavailableOperation";
+
     public static IServiceCollection AddJwtAuthentication(
         this IServiceCollection services, IConfiguration configuration)
     {
@@ -28,6 +32,19 @@ public static class AuthExtensions
                     ClockSkew = TimeSpan.Zero
                 };
             });
+
+        return services;
+    }
+
+    public static IServiceCollection AddFinRegAuthorization(this IServiceCollection services)
+    {
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy(ReadAccess, policy => policy.RequireRole("Auditor", "ComplianceOfficer"));
+            options.AddPolicy(ComplianceReview, policy => policy.RequireRole("ComplianceOfficer"));
+            // No operational role exists in the seeded model. Unsupported mutations stay closed.
+            options.AddPolicy(UnavailableOperation, policy => policy.RequireAssertion(_ => false));
+        });
 
         return services;
     }

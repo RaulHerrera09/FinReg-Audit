@@ -1,11 +1,12 @@
+import { lazy, Suspense } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { useAuthStore } from './store/authStore'
 import AppLayout from './components/layout/AppLayout'
-import LoginPage from './pages/LoginPage'
-import DashboardPage from './pages/DashboardPage'
-import AccountsPage from './pages/AccountsPage'
-import AccountDetailPage from './pages/AccountDetailPage'
-import AlertsPage from './pages/AlertsPage'
+const LoginPage = lazy(() => import('./pages/LoginPage'))
+const DashboardPage = lazy(() => import('./pages/DashboardPage'))
+const AccountsPage = lazy(() => import('./pages/AccountsPage'))
+const AccountDetailPage = lazy(() => import('./pages/AccountDetailPage'))
+const AlertsPage = lazy(() => import('./pages/AlertsPage'))
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const token = useAuthStore((s) => s.token)
@@ -15,6 +16,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <BrowserRouter>
+      <Suspense fallback={<div className="route-loading">Loading workspace…</div>}>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route
@@ -33,6 +35,7 @@ export default function App() {
         </Route>
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
+      </Suspense>
     </BrowserRouter>
   )
 }

@@ -3,12 +3,13 @@ using FinReg.Application.Common.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using FinReg.API.Extensions;
 
 namespace FinReg.API.Controllers;
 
 [ApiController]
 [Route("api/alerts")]
-[Authorize]
+[Authorize(Policy = AuthExtensions.ReadAccess)]
 public sealed class AlertsController(IMediator mediator) : ControllerBase
 {
     [HttpGet]

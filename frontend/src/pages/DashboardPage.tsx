@@ -28,23 +28,23 @@ export default function DashboardPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Compliance Dashboard</h1>
+        <h1 className="page-title">Control room</h1>
         <p className="text-slate-500 text-sm mt-1">
-          Real-time FCA transaction monitoring and risk assessment
+          Technical platform inspired by financial audit and compliance workflows.
         </p>
       </div>
 
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
         <StatCard title="Total Accounts" value={totalAccounts} icon={Building2} accent="indigo" />
         <StatCard title="Active Alerts" value={totalAlerts} icon={AlertTriangle} accent="amber" />
-        <StatCard title="High-Risk Flags" value={flaggedTx} icon={Flag} accent="red" />
-        <StatCard title="Critical Alerts" value={criticalAlerts} icon={ShieldCheck} accent="red" />
+        <StatCard title="High-risk on current page" value={flaggedTx} icon={Flag} accent="amber" />
+        <StatCard title="Critical on current page" value={criticalAlerts} icon={ShieldCheck} accent="red" />
       </div>
 
       <div className="bg-white rounded-xl border border-slate-200">
         <div className="px-5 py-4 border-b border-slate-200">
           <h2 className="text-sm font-semibold text-slate-900">Recent Alerts</h2>
-          <p className="text-xs text-slate-500 mt-0.5">Latest FCA-threshold breach notifications</p>
+          <p className="text-xs text-slate-500 mt-0.5">Most recent records on the current query page</p>
         </div>
         <AlertsTable data={alertsData?.data?.items ?? []} isLoading={alertsLoading} />
       </div>

@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom'
-import { AlertTriangle, Building2, LayoutDashboard, LogOut, ShieldCheck } from 'lucide-react'
+import { AlertTriangle, Building2, LayoutDashboard, LogOut, ScanLine } from 'lucide-react'
 import { useAuthStore } from '../../store/authStore'
 
 const navItems = [
@@ -18,27 +18,27 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="w-60 bg-slate-900 flex flex-col shrink-0">
-      <div className="px-5 py-6 border-b border-slate-700">
+    <aside className="sidebar">
+      <div className="brand-block">
         <div className="flex items-center gap-3">
-          <ShieldCheck size={24} className="text-indigo-400" />
+          <ScanLine size={24} aria-hidden="true" />
           <div>
-            <p className="text-white text-sm font-semibold leading-tight">FinReg Audit</p>
-            <p className="text-slate-400 text-xs">FCA Compliance</p>
+            <p className="brand-name">FinReg Audit</p>
+            <p className="brand-kicker">Control room</p>
           </div>
         </div>
       </div>
 
-      <nav className="flex-1 px-3 py-4 space-y-1">
+      <nav className="sidebar-nav" aria-label="Primary navigation">
         {navItems.map(({ path, label, icon: Icon }) => (
           <NavLink
             key={path}
             to={path}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+              `nav-item ${
                 isActive
-                  ? 'bg-indigo-600 text-white'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                  ? 'nav-item-active'
+                  : ''
               }`
             }
           >
@@ -48,10 +48,10 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      <div className="px-3 py-4 border-t border-slate-700">
+      <div className="sidebar-footer">
         <button
           onClick={handleLogout}
-          className="flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+          className="nav-item signout"
         >
           <LogOut size={18} />
           Sign out

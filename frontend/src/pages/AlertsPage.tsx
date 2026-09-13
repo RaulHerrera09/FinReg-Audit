@@ -17,9 +17,9 @@ export default function AlertsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">FCA Alerts</h1>
+        <h1 className="page-title">Risk alerts</h1>
         <p className="text-slate-500 text-sm mt-1">
-          Transactions flagged for exceeding FCA risk thresholds (£10k / £25k / £50k)
+          Recorded risk exceptions and threshold-based alert records.
         </p>
       </div>
 

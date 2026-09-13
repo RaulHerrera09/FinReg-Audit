@@ -62,6 +62,10 @@ export interface AuditEventDto {
   eventType: string
   occurredOn: string
   version: number
+  actor?: string
+  source?: string
+  ingestedAt?: string
+  payload?: unknown
 }
 
 export interface ComplianceReportDto {

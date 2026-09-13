@@ -12,7 +12,9 @@ public sealed class AuditRepository(AppDbContext db) : IAuditRepository
     {
         var query = db.AuditEvents.AsNoTracking()
             .Where(e => e.AggregateId == accountId)
-            .OrderByDescending(e => e.OccurredOn);
+            .OrderByDescending(e => e.OccurredOn)
+            .ThenByDescending(e => e.Version)
+            .ThenByDescending(e => e.EventId);
 
         var total = await query.CountAsync(ct);
         var items = await query

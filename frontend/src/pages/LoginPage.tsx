@@ -40,7 +40,7 @@ export default function LoginPage() {
           </div>
           <div>
             <h1 className="text-xl font-bold text-slate-900 leading-tight">FinReg Audit</h1>
-            <p className="text-sm text-slate-500">FCA Compliance Platform</p>
+            <p className="text-sm text-slate-500">Regulatory control room</p>
           </div>
         </div>
 

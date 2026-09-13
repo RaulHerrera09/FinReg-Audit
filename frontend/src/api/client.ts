@@ -20,6 +20,15 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<ApiR
     throw new Error('Unauthorized')
   }
 
+  if (res.status === 403) {
+    throw new Error('You do not have permission to perform this action.')
+  }
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({})) as ApiResponse<never>
+    throw new Error(body.error ?? `Request failed (${res.status}).`)
+  }
+
   return res.json()
 }
 

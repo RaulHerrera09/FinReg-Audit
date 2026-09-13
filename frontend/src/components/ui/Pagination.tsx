@@ -11,22 +11,24 @@ export default function Pagination({ page, totalPages, totalCount, onPageChange 
   if (totalPages <= 1) return null
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 border-t border-slate-200">
-      <p className="text-sm text-slate-500">
+    <div className="pagination">
+      <p>
         Page {page} of {totalPages} &mdash; {totalCount} total
       </p>
-      <div className="flex gap-1">
+      <div className="flex gap-2">
         <button
           onClick={() => onPageChange(page - 1)}
           disabled={page <= 1}
-          className="p-1.5 rounded hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed text-slate-600"
+          aria-label="Previous page"
+          className="icon-button"
         >
           <ChevronLeft size={16} />
         </button>
         <button
           onClick={() => onPageChange(page + 1)}
           disabled={page >= totalPages}
-          className="p-1.5 rounded hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed text-slate-600"
+          aria-label="Next page"
+          className="icon-button"
         >
           <ChevronRight size={16} />
         </button>

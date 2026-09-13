@@ -12,6 +12,7 @@ using FinReg.Application.Transactions.Commands.FlagTransaction;
 using FinReg.Application.Transactions.Commands.InitiateTransaction;
 using FinReg.Application.Transactions.Queries.GetTransactionsByAccount;
 using FinReg.Domain.Enums;
+using FinReg.API.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,7 @@ namespace FinReg.API.Controllers;
 
 [ApiController]
 [Route("api/accounts")]
-[Authorize]
+[Authorize(Policy = AuthExtensions.ReadAccess)]
 public sealed class AccountsController(IMediator mediator) : ControllerBase
 {
     public sealed record OpenAccountRequest(string HolderName, string Currency);
@@ -40,6 +41,7 @@ public sealed class AccountsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Policy = AuthExtensions.UnavailableOperation)]
     public async Task<IActionResult> OpenAccount([FromBody] OpenAccountRequest request, CancellationToken ct)
     {
         var result = await mediator.Send(new OpenAccountCommand(request.HolderName, request.Currency), ct);
@@ -55,6 +57,7 @@ public sealed class AccountsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost("{id:guid}/suspend")]
+    [Authorize(Policy = AuthExtensions.UnavailableOperation)]
     public async Task<IActionResult> SuspendAccount(Guid id, [FromBody] ReasonRequest request, CancellationToken ct)
     {
         var result = await mediator.Send(new SuspendAccountCommand(id, request.Reason), ct);
@@ -63,6 +66,7 @@ public sealed class AccountsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost("{id:guid}/close")]
+    [Authorize(Policy = AuthExtensions.UnavailableOperation)]
     public async Task<IActionResult> CloseAccount(Guid id, [FromBody] ReasonRequest request, CancellationToken ct)
     {
         var result = await mediator.Send(new CloseAccountCommand(id, request.Reason), ct);
@@ -80,6 +84,7 @@ public sealed class AccountsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost("{id:guid}/transactions")]
+    [Authorize(Policy = AuthExtensions.UnavailableOperation)]
     public async Task<IActionResult> InitiateTransaction(
         Guid id, [FromBody] InitiateTransactionRequest request, CancellationToken ct)
     {
@@ -90,6 +95,7 @@ public sealed class AccountsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost("{id:guid}/transactions/{transactionId:guid}/complete")]
+    [Authorize(Policy = AuthExtensions.UnavailableOperation)]
     public async Task<IActionResult> CompleteTransaction(Guid id, Guid transactionId, CancellationToken ct)
     {
         var result = await mediator.Send(new CompleteTransactionCommand(id, transactionId), ct);
@@ -98,6 +104,7 @@ public sealed class AccountsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost("{id:guid}/transactions/{transactionId:guid}/flag")]
+    [Authorize(Policy = AuthExtensions.ComplianceReview)]
     public async Task<IActionResult> FlagTransaction(
         Guid id, Guid transactionId, [FromBody] FlagTransactionRequest request, CancellationToken ct)
     {
