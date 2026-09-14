@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import type { AuditEventDto, PaginatedList } from '../../types'
 import Pagination from '../ui/Pagination'
+import { formatUtcDateTime as utc } from '../../lib/dateFormat'
 
-function utc(value: string) { return new Date(value).toLocaleString('en-GB', { timeZone: 'UTC', timeZoneName: 'short', dateStyle: 'medium', timeStyle: 'medium' }) }
 function local(value: string) { return new Date(value).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' }) }
 
 export default function AuditTrail({ list, loading, error, page, onPageChange }: { list?: PaginatedList<AuditEventDto>, loading: boolean, error?: Error | null, page: number, onPageChange: (page: number) => void }) {
